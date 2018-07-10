@@ -25,7 +25,7 @@ SQL-exercise
 
 ```
 
-### やり方
+## Getting Started
 
 たとえば、exercise_01を行う場合
 
