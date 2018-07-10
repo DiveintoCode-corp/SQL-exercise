@@ -4,17 +4,18 @@
 -----------------------------------------
 
 CREATE TABLE Departments (
-  Code INTEGER PRIMARY KEY,
-  Name varchar(255) NOT NULL ,
-  Budget decimal NOT NULL 
+  Code INTEGER PRIMARY KEY NOT NULL,
+  Name TEXT NOT NULL ,
+  Budget REAL NOT NULL
 );
 
 CREATE TABLE Employees (
-  SSN INTEGER PRIMARY KEY,
-  Name varchar(255) NOT NULL ,
-  LastName varchar(255) NOT NULL ,
-  Department INTEGER NOT NULL , 
-  foreign key (department) references Departments(Code) 
+  SSN INTEGER PRIMARY KEY NOT NULL,
+  Name TEXT NOT NULL ,
+  LastName TEXT NOT NULL ,
+  Department INTEGER NOT NULL ,
+  CONSTRAINT fk_Departments_Code FOREIGN KEY(Department)
+  REFERENCES Departments(Code)
 );
 
 INSERT INTO Departments(Code,Name,Budget) VALUES(14,'IT',65000);

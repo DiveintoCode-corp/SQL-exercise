@@ -1,55 +1,54 @@
 -- https://en.wikibooks.org/wiki/SQL_Exercises/Planet_Express
 
 CREATE TABLE Employee (
-  EmployeeID INTEGER PRIMARY KEY,
-  Name VARCHAR(255) NOT NULL,
-  Position VARCHAR(255) NOT NULL,
+  EmployeeID INTEGER PRIMARY KEY NOT NULL,
+  Name TEXT NOT NULL,
+  Position TEXT NOT NULL,
   Salary REAL NOT NULL,
-  Remarks VARCHAR(255)
-) ENGINE = InnoDB; 
+  Remarks TEXT
+);
 
 CREATE TABLE Planet (
-  PlanetID INTEGER PRIMARY KEY,
-  Name VARCHAR(255) NOT NULL,
+  PlanetID INTEGER PRIMARY KEY NOT NULL,
+  Name TEXT NOT NULL,
   Coordinates REAL NOT NULL
-) ENGINE = InnoDB; 
+);
 
 CREATE TABLE Shipment (
-  ShipmentID INTEGER PRIMARY KEY,
-  Date DATE,
-  Manager INTEGER NOT NULL,
-  Planet INTEGER NOT NULL,
-  FOREIGN KEY (Manager) REFERENCES Employee(EmployeeID),
-  FOREIGN KEY (Planet) REFERENCES Planet(PlanetID)
-) ENGINE = InnoDB;
+  ShipmentID INTEGER PRIMARY KEY NOT NULL,
+  Date TEXT,
+  Manager INTEGER NOT NULL
+    CONSTRAINT fk_Employee_EmployeeID REFERENCES Employee(EmployeeID),
+  Planet INTEGER NOT NULL
+    CONSTRAINT fk_Planet_PlanetID REFERENCES Planet(PlanetID)
+);
 
 CREATE TABLE Has_Clearance (
-  Employee INTEGER NOT NULL,
-  Planet INTEGER NOT NULL,
+  Employee INTEGER NOT NULL
+    CONSTRAINT fk_Employee_EmployeeID REFERENCES Employee(EmployeeID),
+  Planet INTEGER NOT NULL
+    CONSTRAINT fk_Planet_PlanetID REFERENCES Planet(PlanetID),
   Level INTEGER NOT NULL,
-  PRIMARY KEY(Employee, Planet),
-  FOREIGN KEY (Employee) REFERENCES Employee(EmployeeID),
-  FOREIGN KEY (Planet) REFERENCES Planet(PlanetID)
-) ENGINE = InnoDB; 
+  PRIMARY KEY(Employee, Planet)
+);
 
 CREATE TABLE Client (
-  AccountNumber INTEGER PRIMARY KEY,
-  Name VARCHAR(255) NOT NULL
-) ENGINE = InnoDB;
-  
-CREATE TABLE Package (
-  Shipment INTEGER NOT NULL,
-  PackageNumber INTEGER NOT NULL,
-  Contents VARCHAR(255) NOT NULL,
-  Weight REAL NOT NULL,
-  Sender INTEGER NOT NULL,
-  Recipient INTEGER NOT NULL,
-  PRIMARY KEY(Shipment, PackageNumber),
-  FOREIGN KEY (Shipment) REFERENCES Shipment(ShipmentID),
-  FOREIGN KEY (Sender) REFERENCES Client(AccountNumber),
-  FOREIGN KEY (Recipient) REFERENCES Client(AccountNumber)
-) ENGINE = InnoDB;
+  AccountNumber INTEGER PRIMARY KEY NOT NULL,
+  Name TEXT NOT NULL
+);
 
+CREATE TABLE Package (
+  Shipment INTEGER NOT NULL
+    CONSTRAINT fk_Shipment_ShipmentID REFERENCES Shipment(ShipmentID),
+  PackageNumber INTEGER NOT NULL,
+  Contents TEXT NOT NULL,
+  Weight REAL NOT NULL,
+  Sender INTEGER NOT NULL
+    CONSTRAINT fk_Client_AccountNumber REFERENCES Client(AccountNumber),
+  Recipient INTEGER NOT NULL
+    CONSTRAINT fk_Client_AccountNumber REFERENCES Client(AccountNumber),
+  PRIMARY KEY(Shipment, PackageNumber)
+);
 
 INSERT INTO Client VALUES(1, 'Zapp Brannigan');
 INSERT INTO Client VALUES(2, "Al Gore's Head");
